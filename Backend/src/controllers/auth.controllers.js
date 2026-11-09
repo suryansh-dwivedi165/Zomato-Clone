@@ -166,7 +166,7 @@ async function loginPartener(req, res) {
     })
 }
 
-async function logoutUser(req, res) {
+async function logoutPartener(req, res) {
     res.clearCookie("token");
 
     res.status(200).json({
@@ -178,6 +178,9 @@ module.exports = {
   registerUser,
   loginUser,
   logoutUser,
+  registerFoodPartener,
+  loginPartener,
+  logoutPartener
 };
 
 // dictionary or brute force attack se bachne ke liye invalid response bhejte hai
