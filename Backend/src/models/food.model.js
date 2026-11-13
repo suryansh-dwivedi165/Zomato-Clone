@@ -12,12 +12,12 @@ const foodSchema = new mongoose.Schema({
     description: {
         type: String, 
     },
-    foodPartener: {
+    foodPartner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "food"
     }
 })
 
-const foodModel = mongoose.model("food", foodSchema);
+const foodModel = mongoose.model("food_view", foodSchema);
 
 module.exports = foodModel; 
