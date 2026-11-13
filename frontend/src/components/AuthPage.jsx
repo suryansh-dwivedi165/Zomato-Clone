@@ -157,4 +157,4 @@ const AuthPage = ({ role, mode }) => {
   )
 }
 
-export default AuthPage;
+export default AuthPage
