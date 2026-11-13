@@ -6,12 +6,12 @@ const imagekit = new ImageKit({
     urlEndpoint:process.env.IMAGEKIT_UTL_ENDPOINT
 })
 
-async function uploadFile(req, res) {
-    const result = await ImageKit.upload({
+async function uploadFile(file, fileName) {
+    const result = await imagekit.upload({
         file:file,
-        filename: filename
+        fileName: fileName
     });
     return result;
 }
 
-module.exports = uploadFile;
+module.exports = {uploadFile};

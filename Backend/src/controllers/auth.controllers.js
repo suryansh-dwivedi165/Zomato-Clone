@@ -1,11 +1,10 @@
 const userModel = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
-const cookie = require("cookie-parser");
 const foodPartenerModel = require("../models/fodPartener.model");
 
 async function registerUser(req, res) {
-  const { fullName, email, password } = req.body;
+  const { fullName, email, password, phone } = req.body;
 
   const isUserAlreadyExists = await userModel.findOne({
     email,
@@ -22,6 +21,7 @@ async function registerUser(req, res) {
     fullName,
     password: hashedPassword,
     email,
+    phone
   });
 
   const token = JWT.sign(
@@ -56,7 +56,7 @@ async function loginUser(req, res) {
     });
   }
 
-  const isPasswordValid = bcrypt.compare(password, userDataExists.password);
+  const isPasswordValid = await bcrypt.compare(password, userDataExists.password);
 
   if (!isPasswordValid) {
     return res.status(400).json({
@@ -94,19 +94,19 @@ async function logoutUser(req, res) {
 async function registerFoodPartener(req, res) {
   const { name, email, password } = req.body;
 
-  const partenerAlreadyExists = await userAlreadyExists.findOne({
+  const partenerAlreadyExists = await foodPartenerModel.findOne({
     email,
   });
 
   if (partenerAlreadyExists) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "Partener already exists",
     });
   }
 
-  const hashedPassword = bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-  const data = await userAlreadyExists.create({
+  const data = await foodPartenerModel.create({
     name,
     email,
     password: hashedPassword,
@@ -131,23 +131,23 @@ async function registerFoodPartener(req, res) {
 }
 
 async function loginPartener(req, res) {
-    const { name, email, password } = req.body;
+    const { email, password } = req.body;
 
-    const partenerData = foodPartenerModel.findOne({
+    const partenerData = await foodPartenerModel.findOne({
         email
     })
 
     if(!partenerData) {
-        res.status(400).json({
-            message: "Partener doesn't exists"
+        return res.status(400).json({
+            message: "Invalid email and password"
         })
     }
 
-    const checkPartener = bcrypt.compare(password, partenerData.password);
+    const checkPartener = await bcrypt.compare(password, partenerData.password);
 
     if(!checkPartener) {
-        res.status(400).json({
-            message: "User credientials doesn't match"
+        return res.status(400).json({
+            message: "Invalid email and password"
         })
     }
 
@@ -180,7 +180,7 @@ module.exports = {
   logoutUser,
   registerFoodPartener,
   loginPartener,
-  logoutPartener
+  logoutPartener,
 };
 
 // dictionary or brute force attack se bachne ke liye invalid response bhejte hai

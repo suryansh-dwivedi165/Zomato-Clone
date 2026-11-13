@@ -13,10 +13,10 @@ async function authFoodPartenerMiddleware(req, res, next) {
     try {
         const decoded = JWT.verify(token, process.env.JWT_SECRET);
 
-        const foodPartener = await foodPartenerModel.findOne(decoded.id); 
-
+        const foodPartener = await foodPartenerModel.findById(decoded.id); 
+        
         req.foodPartener = foodPartener;
-
+        
         next();
     }
     catch(err) {
@@ -26,8 +26,8 @@ async function authFoodPartenerMiddleware(req, res, next) {
     }
 }
 
-async function authUserMiddleware(req, res) {
-
+async function authUserMiddleware(req, res, next) {
+    next();
 }
 module.exports = {
     authFoodPartenerMiddleware,
