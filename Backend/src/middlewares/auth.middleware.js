@@ -26,6 +26,10 @@ async function authFoodPartenerMiddleware(req, res, next) {
     }
 }
 
+async function authUserMiddleware(req, res) {
+
+}
 module.exports = {
-    authFoodPartenerMiddleware
+    authFoodPartenerMiddleware,
+    authUserMiddleware
 }
